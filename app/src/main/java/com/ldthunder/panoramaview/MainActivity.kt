@@ -11,13 +11,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        gyroscopeObserver = GyroscopeObserver()
-        gyroscopeObserver.setMaxRotateRadian(Math.PI / 2)
-
         val panoramaImageView: PanoramaView =
             findViewById<View>(R.id.panorama_image_view) as PanoramaView
-        panoramaImageView.setGyroscopeObserver(gyroscopeObserver)
+
+        gyroscopeObserver = GyroscopeObserver().also {
+            it.setMaxRotateRadian(Math.PI / 2)
+            panoramaImageView.setGyroscopeObserver(it)
+        }
+
     }
 
     override fun onResume() {
