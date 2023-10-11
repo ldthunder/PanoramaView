@@ -15,7 +15,7 @@ class MainActivity : AppCompatActivity() {
             findViewById<View>(R.id.panorama_image_view) as PanoramaView
 
         gyroscopeObserver = GyroscopeObserver().also {
-            it.setMaxRotateRadian(Math.PI / 2)
+            it.setMaxRotateRadian(GyroscopeObserver.NORMAL)
             panoramaImageView.setGyroscopeObserver(it)
         }
 
