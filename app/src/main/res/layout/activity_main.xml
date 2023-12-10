@@ -11,10 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/chuxiong"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         app:piv_enablePanoramaMode="true"
         app:piv_invertScrollDirection="false"
-        app:piv_show_scrollbar="true"
-        tools:layout_editor_absoluteX="-115dp"
-        tools:layout_editor_absoluteY="-66dp" />
+        app:piv_show_scrollbar="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

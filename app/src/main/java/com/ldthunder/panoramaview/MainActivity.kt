@@ -8,28 +8,29 @@ import com.ldthunder.panorama_view.PanoramaView
 
 class MainActivity : AppCompatActivity() {
     private lateinit var gyroscopeObserver: GyroscopeObserver
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         val panoramaImageView: PanoramaView =
             findViewById<View>(R.id.panorama_image_view) as PanoramaView
 
         gyroscopeObserver = GyroscopeObserver().also {
-            it.setMaxRotateRadian(GyroscopeObserver.NORMAL)
+            it.setMaxRotateRadian(GyroscopeObserver.SLOW)
             panoramaImageView.setGyroscopeObserver(it)
         }
-
     }
 
     override fun onResume() {
         super.onResume()
-        // Register GyroscopeObserver.
+        // Register the GyroscopeObserver
         gyroscopeObserver.register(this)
     }
 
     override fun onPause() {
         super.onPause()
-        // Unregister GyroscopeObserver.
+        // Unregister the GyroscopeObserver
         gyroscopeObserver.unregister()
     }
 }

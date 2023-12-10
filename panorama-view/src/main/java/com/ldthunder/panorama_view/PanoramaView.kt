@@ -10,9 +10,6 @@ import android.util.TypedValue
 import androidx.appcompat.widget.AppCompatImageView
 import kotlin.math.abs
 
-/**
- * Created by gjz on 19/12/2016.
- */
 class PanoramaView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -21,7 +18,6 @@ class PanoramaView @JvmOverloads constructor(
     var orientation = ORIENTATION_NONE
         private set
 
-    // Enable panorama effect or not
     var isPanoramaModeEnabled: Boolean
         private set
 
@@ -36,20 +32,20 @@ class PanoramaView @JvmOverloads constructor(
     private var mWidth = 0
     private var mHeight = 0
 
-    // Image's offset from initial state(center in the view).
+    // Image's offset from initial state(center in the view)
     private var mMaxOffset = 0f
 
-    // The scroll progress.
+    // The scroll progress
     private var mProgress = 0f
 
-    // Show scroll bar or not
+    // Show scrollbar or not
     var isScrollbarEnabled: Boolean
         private set
 
     // The paint to draw scrollbar
     private var mScrollbarPaint: Paint? = null
 
-    // Observe scroll state
+    // Observe the scroll state
     private var mOnPanoramaScrollListener: OnPanoramaScrollListener? = null
 
     init {
@@ -60,7 +56,7 @@ class PanoramaView @JvmOverloads constructor(
         mInvertScrollDirection =
             typedArray.getBoolean(R.styleable.PanoramaView_piv_invertScrollDirection, false)
         isScrollbarEnabled =
-            typedArray.getBoolean(R.styleable.PanoramaView_piv_show_scrollbar, true)
+            typedArray.getBoolean(R.styleable.PanoramaView_piv_show_scrollbar, false)
         typedArray.recycle()
         if (isScrollbarEnabled) {
             initScrollbarPaint()
@@ -71,6 +67,14 @@ class PanoramaView @JvmOverloads constructor(
         mScrollbarPaint = Paint(Paint.ANTI_ALIAS_FLAG)
         mScrollbarPaint!!.color = Color.WHITE
         mScrollbarPaint!!.strokeWidth = dp2px(1.5f)
+    }
+
+    private fun dp2px(dp: Float): Float {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            dp,
+            Resources.getSystem().displayMetrics
+        )
     }
 
     fun setGyroscopeObserver(observer: GyroscopeObserver?) {
@@ -159,14 +163,6 @@ class PanoramaView @JvmOverloads constructor(
                 }
             }
         }
-    }
-
-    private fun dp2px(dp: Float): Float {
-        return TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            dp,
-            Resources.getSystem().displayMetrics
-        )
     }
 
     fun setEnablePanoramaMode(enable: Boolean) {
