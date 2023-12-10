@@ -53,6 +53,7 @@ class GyroscopeObserver : SensorEventListener {
         mLastTimestamp = 0
         mRotateRadianX = 0.0
         mRotateRadianY = mRotateRadianX
+        Log.d(TAG, "Gyroscope is registered")
     }
 
     // Отзывает регистрацию и очищает Sensor Manager instance
@@ -60,6 +61,7 @@ class GyroscopeObserver : SensorEventListener {
         if (mSensorManager != null) {
             mSensorManager!!.unregisterListener(this)
             mSensorManager = null
+            Log.d(TAG, "Gyroscope is unregistered")
         }
     }
 
@@ -127,6 +129,7 @@ class GyroscopeObserver : SensorEventListener {
     companion object {
         // For translate nanosecond to second.
         private const val nanoToSeconds = 1.0f / 1000000000.0f
+        private const val TAG = "PanoramaViewGyroscope"
         // Rotation Speed Constants for MaxRotateRadian
         const val SLOW = Math.PI / 2
         const val NORMAL = Math.PI / 9

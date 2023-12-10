@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.ldthunder.panorama_view.GyroscopeObserver
+import com.ldthunder.panorama_view.GyroscopeObserverDelegate
 import com.ldthunder.panorama_view.PanoramaView
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var gyroscopeObserver: GyroscopeObserver
+    // Lifecycle-aware delegate which automatically register in onResume() and unregister in onPause()
+    private val gyroscopeObserver by GyroscopeObserverDelegate(this, GyroscopeObserver())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -15,22 +17,20 @@ class MainActivity : AppCompatActivity() {
 
         val panoramaImageView: PanoramaView =
             findViewById<View>(R.id.panorama_image_view) as PanoramaView
-
-        gyroscopeObserver = GyroscopeObserver().also {
-            it.setMaxRotateRadian(GyroscopeObserver.SLOW)
-            panoramaImageView.setGyroscopeObserver(it)
-        }
+        panoramaImageView.setGyroscopeObserver(gyroscopeObserver)
     }
 
     override fun onResume() {
         super.onResume()
         // Register the GyroscopeObserver
-        gyroscopeObserver.register(this)
+        gyroscopeObserver.setMaxRotateRadian(GyroscopeObserver.SLOW)
+        // gyroscopeObserver.register(this)
     }
 
     override fun onPause() {
         super.onPause()
+        gyroscopeObserver.setMaxRotateRadian(GyroscopeObserver.FAST)
         // Unregister the GyroscopeObserver
-        gyroscopeObserver.unregister()
+        // gyroscopeObserver.unregister()
     }
 }
