@@ -96,7 +96,7 @@ class MainActivity : AppCompatActivity() {
 ```
 ## Observing Scroll State
 
-### To receive callbacks during image scrolling, assign an OnPanoramaScrollListener object to PanoramaView:
+To receive callbacks during image scrolling, assign an OnPanoramaScrollListener object to PanoramaView:
 
 ```kotlin
 panoramaImageView.setOnPanoramaScrollListener(object : PanoramaView.OnPanoramaScrollListener {
