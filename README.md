@@ -17,7 +17,7 @@ dependencyResolutionManagement {
 ### Step 2. Add the dependency 
 In build.gradle:
 ```groovy
-implementation 'com.github.ldthunder:PanoramaView:1.1'
+implementation 'com.github.ldthunder:PanoramaView:1.0'
 ```
 
 ## PanoramaView in Layout File
