@@ -24,6 +24,13 @@ class MainActivity : AppCompatActivity() {
         gyroscopeObserver.setMaxRotateRadian(GyroscopeObserver.SLOW)
         // Saving the position of view when you unregister the observer
         gyroscopeObserver.setPositionSaving(true)
+
+        panoramaImageView.setOnPanoramaScrollListener(object : PanoramaView.OnPanoramaScrollListener {
+            override fun onScrolled(view: PanoramaView?, offsetProgress: Float) {
+                /* The offsetProgress range is from -1 to 1, indicating the scrolling of the image
+                from left(top) to right(bottom) */
+            }
+        })
     }
 
     override fun onResume() {
