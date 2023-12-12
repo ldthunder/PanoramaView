@@ -18,10 +18,9 @@ class PanoramaView @JvmOverloads constructor(
     var orientation = ORIENTATION_NONE
         private set
 
-    var isPanoramaModeEnabled: Boolean
-        private set
+    private var isPanoramaModeEnabled: Boolean
 
-    // If true, the image scroll left(top) when the device clockwise rotate along y-axis(x-axis).
+    // If true, the image scrolls left(top) when the device is rotating clockwise along y-axis(x-axis).
     private var mInvertScrollDirection: Boolean
 
     // Image's width and height
@@ -38,9 +37,8 @@ class PanoramaView @JvmOverloads constructor(
     // The scroll progress
     private var mProgress = 0f
 
-    // Show scrollbar or not
-    var isScrollbarEnabled: Boolean
-        private set
+    // Display Scrollbar or not
+    private var isScrollbarEnabled: Boolean
 
     // The paint to draw scrollbar
     private var mScrollbarPaint: Paint? = null
@@ -50,14 +48,14 @@ class PanoramaView @JvmOverloads constructor(
 
     init {
         super.setScaleType(ScaleType.CENTER_CROP)
-        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.PanoramaView)
+        val attbsTypedArray = context.obtainStyledAttributes(attrs, R.styleable.PanoramaView)
         isPanoramaModeEnabled =
-            typedArray.getBoolean(R.styleable.PanoramaView_piv_enablePanoramaMode, true)
+            attbsTypedArray.getBoolean(R.styleable.PanoramaView_enablePanoramaMode, true)
         mInvertScrollDirection =
-            typedArray.getBoolean(R.styleable.PanoramaView_piv_invertScrollDirection, false)
+            attbsTypedArray.getBoolean(R.styleable.PanoramaView_invertScrollDirection, false)
         isScrollbarEnabled =
-            typedArray.getBoolean(R.styleable.PanoramaView_piv_show_scrollbar, false)
-        typedArray.recycle()
+            attbsTypedArray.getBoolean(R.styleable.PanoramaView_showScrollbar, false)
+        attbsTypedArray.recycle()
         if (isScrollbarEnabled) {
             initScrollbarPaint()
         }
@@ -77,6 +75,10 @@ class PanoramaView @JvmOverloads constructor(
         )
     }
 
+    /**
+     * Bonds the [GyroscopeObserver] class with the [PanoramaView]
+     * @param observer instance of the observer
+     */
     fun setGyroscopeObserver(observer: GyroscopeObserver?) {
         observer?.addPanoramaImageView(this)
     }
@@ -116,7 +118,7 @@ class PanoramaView @JvmOverloads constructor(
             return
         }
 
-        // Draw image
+        // Draws image
         if (orientation == ORIENTATION_HORIZONTAL) {
             val currentOffsetX = mMaxOffset * mProgress
             canvas.save()
@@ -131,7 +133,7 @@ class PanoramaView @JvmOverloads constructor(
             canvas.restore()
         }
 
-        // Draw scrollbar
+        // Draws scrollbar
         if (isScrollbarEnabled) {
             when (orientation) {
                 ORIENTATION_HORIZONTAL -> {
@@ -164,18 +166,27 @@ class PanoramaView @JvmOverloads constructor(
             }
         }
     }
+    /**
+     * Callback interface for image scrolling
+     */
+    interface OnPanoramaScrollListener {
+        /**
+         * Calls when the image is scrolling
+         * @param view the [PanoramaView] shows the image
+         * @param offsetProgress value between (-1, 1) indicating the offset progress:
+         * -1 means the image scrolls to show its left(top) bound,
+         * 1 means the image scrolls to show its right(bottom) bound.
+         */
+        fun onScrolled(view: PanoramaView?, offsetProgress: Float)
+    }
+
+    fun setOnPanoramaScrollListener(listener: OnPanoramaScrollListener?) {
+        mOnPanoramaScrollListener = listener
+    }
 
     fun setEnablePanoramaMode(enable: Boolean) {
         isPanoramaModeEnabled = enable
     }
-
-    var isInvertScrollDirection: Boolean
-        get() = mInvertScrollDirection
-        set(invert) {
-            if (mInvertScrollDirection != invert) {
-                mInvertScrollDirection = invert
-            }
-        }
 
     fun setEnableScrollbar(enable: Boolean) {
         if (isScrollbarEnabled != enable) {
@@ -188,28 +199,15 @@ class PanoramaView @JvmOverloads constructor(
         }
     }
 
-    /**
-     * Interface definition for a callback to be invoked when the image is scrolling
-     */
-    interface OnPanoramaScrollListener {
-        /**
-         * Call when the image is scrolling
-         *
-         * @param view the panoramaImageView shows the image
-         *
-         * @param offsetProgress value between (-1, 1) indicating the offset progress.
-         * -1 means the image scrolls to show its left(top) bound,
-         * 1 means the image scrolls to show its right(bottom) bound.
-         */
-        fun onScrolled(view: PanoramaView?, offsetProgress: Float)
-    }
-
-    fun setOnPanoramaScrollListener(listener: OnPanoramaScrollListener?) {
-        mOnPanoramaScrollListener = listener
-    }
+    var isInvertScrollDirection: Boolean
+        get() = mInvertScrollDirection
+        set(invert) {
+            if (mInvertScrollDirection != invert) {
+                mInvertScrollDirection = invert
+            }
+        }
 
     companion object {
-        // Image's scroll orientation
         const val ORIENTATION_NONE: Byte = -1
         const val ORIENTATION_HORIZONTAL: Byte = 0
         const val ORIENTATION_VERTICAL: Byte = 1

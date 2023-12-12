@@ -7,6 +7,22 @@ import androidx.lifecycle.LifecycleOwner
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
 
+/**
+ * If you don't want to manually [register][GyroscopeObserver.register]
+ * and [unregister][GyroscopeObserver.unregister] the observer, you can use Lifecycle-aware
+ * delegate. Example usage:
+ * ```
+ * class MainActivity : AppCompatActivity() {
+ *     private val gyroscopeObserver by GyroscopeObserverDelegate(this, GyroscopeObserver())
+ *
+ *     override fun onCreate(savedInstanceState: Bundle?){ ... }
+ * }
+ * ```
+ * @param context The context of your activity
+ * @param observer The instance of [GyroscopeObserver] class
+ * @see GyroscopeObserver
+
+ */
 class GyroscopeObserverDelegate(
     private val context: Context,
     private val observer: GyroscopeObserver,
@@ -19,14 +35,8 @@ class GyroscopeObserverDelegate(
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
         when (event) {
-            Lifecycle.Event.ON_RESUME -> {
-                observer.register(context)
-            }
-
-            Lifecycle.Event.ON_PAUSE -> {
-                observer.unregister()
-            }
-
+            Lifecycle.Event.ON_RESUME -> observer.register(context)
+            Lifecycle.Event.ON_PAUSE -> observer.unregister()
             else -> Unit
         }
     }

@@ -8,29 +8,31 @@ import com.ldthunder.panorama_view.GyroscopeObserverDelegate
 import com.ldthunder.panorama_view.PanoramaView
 
 class MainActivity : AppCompatActivity() {
-    // Lifecycle-aware delegate which automatically register in onResume() and unregister in onPause()
+    /** Lifecycle-aware delegate that automatically registers a listener
+     *  in [onResume][androidx.appcompat.app.AppCompatActivity.onResume]
+     *  and unregisters it in [onPause][androidx.appcompat.app.AppCompatActivity.onPause]. */
     private val gyroscopeObserver by GyroscopeObserverDelegate(this, GyroscopeObserver())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val panoramaImageView: PanoramaView =
-            findViewById<View>(R.id.panorama_image_view) as PanoramaView
+        val panoramaImageView = findViewById<View>(R.id.panorama_image_view) as PanoramaView
+        // Adding Gyroscope Observer to the view
         panoramaImageView.setGyroscopeObserver(gyroscopeObserver)
+        // Changing the maximum rotation radian
+        gyroscopeObserver.setMaxRotateRadian(GyroscopeObserver.SLOW)
+        // Saving the position of view when you unregister the observer
+        gyroscopeObserver.setPositionSaving(true)
     }
 
     override fun onResume() {
         super.onResume()
-        // Register the GyroscopeObserver
-        gyroscopeObserver.setMaxRotateRadian(GyroscopeObserver.SLOW)
-        // gyroscopeObserver.register(this)
+        // gyroscopeObserver.register(this) - if you don't want to use the delegate
     }
 
     override fun onPause() {
         super.onPause()
-        gyroscopeObserver.setMaxRotateRadian(GyroscopeObserver.FAST)
-        // Unregister the GyroscopeObserver
-        // gyroscopeObserver.unregister()
+        // gyroscopeObserver.unregister() - if you don't want to use the delegate
     }
 }
