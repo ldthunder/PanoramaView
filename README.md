@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         // Unregister listener
-        gyroscopeObserver.unregister() - if you don't want to use the delegate
+        gyroscopeObserver.unregister()
     }
 }
 ```
